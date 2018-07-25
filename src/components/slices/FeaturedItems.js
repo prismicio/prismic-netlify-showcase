@@ -24,9 +24,9 @@ export default ({ slice }) =>
           {RichText.render(slice.primary.section_title, linkResolver)}
         </div>
         <div className="products-grid-header-button-wrapper">
-          <Link className="a-button" to={PrismicLink.url(slice.primary.button_link, linkResolver)}>
+          <a className="a-button" href={PrismicLink.url(slice.primary.button_link, linkResolver)}>
             {RichText.asText(slice.primary.button_label)}
-          </Link>
+          </a>
         </div>
       </header>
     </div>

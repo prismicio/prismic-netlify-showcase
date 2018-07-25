@@ -17,9 +17,9 @@ export default ({ slice }) =>
           </div>
         </div>
         <div className="cta-banner-link-wrapper">
-          <Link className="cta-banner-link" to={PrismicLink.url(slice.primary.cta_link, linkResolver)}>
+          <a className="cta-banner-link" to={PrismicLink.url(slice.primary.cta_link, linkResolver)}>
             {slice.primary.cta_label}
-          </Link>
+          </a>
         </div>
       </div>
     </div>
