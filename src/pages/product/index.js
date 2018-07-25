@@ -1,9 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Meta from '../../components/layout/meta'
-import Layout from '../../components/layout'
 import NotFound from '../notfound'
 import { Client, linkResolver } from '../../components/prismic'
-import { RichText, Link } from 'prismic-reactjs'
+import { RichText, Link as PrismicLink } from 'prismic-reactjs'
 
 const fetchLinks = [
   'product.product_image',
@@ -23,7 +23,7 @@ const graphQuery = `{
   }
 }`
 
-class Product extends React.Component {
+export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -31,7 +31,10 @@ class Product extends React.Component {
 
   componentDidMount() {
     Client.getByUID('product', this.props.match.params.uid, { fetchLinks })
-    .then(product => this.setState({ product }))
+    .then(product => {
+      if(product) this.setState({ product })
+      else this.setState({ error: true })
+    })
     .catch(error => {
       console.error(error)
       this.setState({ error })
@@ -43,9 +46,9 @@ class Product extends React.Component {
       <div key={index} className="products-grid-item-wrapper">
         <img className="products-grid-item-image" src={item.product1.data.product_image.url} alt={item.product1.data.product_image.alt}/>
         <p className="products-grid-item-name">
-          <a href={Link.url(item.product1, linkResolver)}>
+          <Link to={PrismicLink.url(item.product1, linkResolver)}>
             {RichText.asText(item.product1.data.product_name)}
-          </a>
+          </Link>
         </p>
         <p className="products-grid-item-subtitle">{RichText.asText(item.product1.data.sub_title)}</p>
       </div>
@@ -73,9 +76,9 @@ class Product extends React.Component {
                     {RichText.render(this.state.product.data.rich_content, linkResolver)}
                   </div>
                   <div className="product-hero-button-wrapper">
-                    <a className="a-button a-button--filled" href={Link.url(this.state.product.data.button_link, linkResolver)}>
+                    <Link className="a-button a-button--filled" to={PrismicLink.url(this.state.product.data.button_link, linkResolver)}>
                       {RichText.asText(this.state.product.data.button_label)}
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -120,8 +123,8 @@ class Product extends React.Component {
   }
 
   render() {
-    if(!this.state.product) return ''
-    else if(this.state.error) return <NotFound />
+    if(this.state.error) return <NotFound msg="this product doesn't exists." />
+    else if(!this.state.product) return ''
 
     return (
     <React.Fragment>
@@ -131,5 +134,3 @@ class Product extends React.Component {
     )
   }
 }
-
-export default Layout(Product)

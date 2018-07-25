@@ -1,11 +1,11 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Meta from '../../components/layout/meta'
-import Layout from '../../components/layout'
 import NotFound from '../notfound'
 import { Client, Prismic, linkResolver } from '../../components/prismic'
 import { RichText } from 'prismic-reactjs'
 
-class BlogHome extends React.Component {
+export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -37,9 +37,9 @@ class BlogHome extends React.Component {
             {RichText.asText(document.data.rich_content).substring(0, 158)} …
           </p>
           <div className="blog-home-post-button-wrapper">
-            <a className="a-button" href={linkResolver(document)}>
+            <Link className="a-button" to={linkResolver(document)}>
               Read post
-            </a>
+            </Link>
           </div>
         </article>
       </div>
@@ -76,5 +76,3 @@ class BlogHome extends React.Component {
     )
   }
 }
-
-export default Layout(BlogHome)

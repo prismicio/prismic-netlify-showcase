@@ -1,6 +1,5 @@
 import React from 'react'
 import Meta from '../../components/layout/meta'
-import Layout from '../../components/layout'
 import NotFound from '../notfound'
 import { Client, linkResolver } from '../../components/prismic'
 import { RichText } from 'prismic-reactjs'
@@ -21,7 +20,7 @@ const graphQuery = `{
   }
 }`
 
-class BlogPost extends React.Component {
+export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -75,7 +74,7 @@ class BlogPost extends React.Component {
 
   render() {
     if(!this.state.blogpost) return ''
-    else if(this.state.error) return <NotFound />
+    else if(this.state.error) return <NotFound msg="this article doesn't exists." />
 
     return (
     <React.Fragment>
@@ -85,5 +84,3 @@ class BlogPost extends React.Component {
     )
   }
 }
-
-export default Layout(BlogPost)

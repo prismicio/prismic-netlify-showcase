@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link, RichText } from 'prismic-reactjs'
+import { Link } from 'react-router-dom'
+import { Link as PrismicLink, RichText } from 'prismic-reactjs'
 import { linkResolver } from '../prismic'
 
 function renderProducts(slice) {
@@ -7,9 +8,9 @@ function renderProducts(slice) {
     <div key={index} className="products-grid-item-wrapper">
       <img className="products-grid-item-image" src={item.link_to_product.data.product_image.url} alt={item.link_to_product.data.product_image.alt}/>
       <p className="products-grid-item-name">
-        <a href={Link.url(item.link_to_product, linkResolver)}>
+        <Link to={PrismicLink.url(item.link_to_product, linkResolver)}>
           {RichText.asText(item.link_to_product.data.product_name)}
-        </a>
+        </Link>
       </p>
       <p className="products-grid-item-subtitle">{RichText.asText(item.link_to_product.data.sub_title)}</p>
     </div>
@@ -23,9 +24,9 @@ export default ({ slice }) =>
           {RichText.render(slice.primary.section_title, linkResolver)}
         </div>
         <div className="products-grid-header-button-wrapper">
-          <a className="a-button" href={Link.url(slice.primary.button_link, linkResolver)}>
+          <Link className="a-button" to={PrismicLink.url(slice.primary.button_link, linkResolver)}>
             {RichText.asText(slice.primary.button_label)}
-          </a>
+          </Link>
         </div>
       </header>
     </div>

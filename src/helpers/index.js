@@ -8,7 +8,7 @@ function loading(props) {
   } else if (props.timedOut) {
     return <div>Taking a long time... <button onClick={ props.retry }>Retry</button></div>
   } else if (props.pastDelay) {
-    return <div>Loading...</div>
+    return ''
   } else {
     return null
   }

@@ -1,5 +1,4 @@
 import React from 'react'
-import Layout from '../../components/layout'
 import NotFound from '../notfound'
 import { Client, linkResolver } from '../../components/prismic'
 import Meta from '../../components/layout/meta'
@@ -32,7 +31,7 @@ const fetchLinks = [
   'product.sub_title'
 ]
 
-class Home extends React.Component {
+export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -129,5 +128,3 @@ class Home extends React.Component {
     )
   }
 }
-
-export default Layout(Home)

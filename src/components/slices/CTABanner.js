@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link, RichText } from 'prismic-reactjs'
+import { Link } from 'react-router-dom'
+import { Link as PrismicLink, RichText } from 'prismic-reactjs'
 import { linkResolver } from '../prismic'
 
 export default ({ slice }) =>
@@ -16,9 +17,9 @@ export default ({ slice }) =>
           </div>
         </div>
         <div className="cta-banner-link-wrapper">
-          <a className="cta-banner-link" href={Link.url(slice.primary.cta_link, linkResolver)}>
+          <Link className="cta-banner-link" to={PrismicLink.url(slice.primary.cta_link, linkResolver)}>
             {slice.primary.cta_label}
-          </a>
+          </Link>
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Meta from '../../components/layout/meta'
-import Layout from '../../components/layout'
 import NotFound from '../notfound'
 import { Client, Prismic, linkResolver } from '../../components/prismic'
 import { RichText } from 'prismic-reactjs'
 
-class Products extends React.Component {
+export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -20,7 +20,7 @@ class Products extends React.Component {
       this.setState({productsDocument, productList: productListResponse.results})
     )
     .catch(error => {
-      console.error(error)
+      // console.error(error)
       this.setState({ error })
     })
   }
@@ -30,9 +30,9 @@ class Products extends React.Component {
       <div key={index} className="products-grid-item-wrapper">
         <img className="products-grid-item-image" src={document.data.product_image.url} alt={document.data.product_image.alt}/>
         <p className="products-grid-item-name">
-          <a href={linkResolver(document)}>
+          <Link to={linkResolver(document)}>
             {RichText.asText(document.data.product_name)}
-          </a>
+          </Link>
         </p>
         <p className="products-grid-item-subtitle">{RichText.asText(document.data.sub_title)}</p>
       </div>
@@ -76,5 +76,3 @@ class Products extends React.Component {
     )
   }
 }
-
-export default Layout(Products)

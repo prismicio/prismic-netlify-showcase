@@ -1,58 +1,45 @@
 import React from 'react'
-import { Client, linkResolver } from '../prismic'
-import NotFound from '../../pages/notfound'
-import { Link } from 'prismic-reactjs'
+import { Route } from "react-router-dom"
+import { linkResolver } from '../prismic'
+import { Link as PrismicLink } from 'prismic-reactjs'
+import { Link } from 'react-router-dom'
 
-export default function (WrappedComponent) {
-  return class extends React.Component {
 
-    constructor(props) {
-      super(props)
-      this.state = {}
-    }
-
-    componentDidMount() {
-      Client.getSingle('layout')
-      .then(layout => this.setState({ layout }))
-      .catch(error => this.setState({ error }))
-    }
-
-    render() {
-      if(!this.state.layout) return ''
-      else if(this.state.error) return <NotFound />
-
-      const headerItems = this.state.layout.data.header_nav_items.map((item, index) =>
-        <a key={index} className="header-nav-link" href={Link.url(item.link, linkResolver)}>
+export default function DefaultLayout ({component: MatchedPage, layout, ...rest}) {
+  return (
+    <Route {...rest} render={matchProps => {
+      const headerItems = layout.data.header_nav_items.map((item, index) =>
+        <Link key={index} className="header-nav-link" to={PrismicLink.url(item.link, linkResolver)}>
           {item.text}
-        </a>
+        </Link>
       )
 
-      const socialItems = this.state.layout.data.footer_social_items.map((item, index) => {
-        const targetAttr = item.link.target ? `target=${item.link.target} rel="noopener"` : '';
+      const socialItems = layout.data.footer_social_items.map((item, index) => {
         return (
           <a
             key={index}
             className="footer-social-item"
-            href={Link.url(item.link, linkResolver)}
-            {...targetAttr}
+            href={item.link.url}
+            target={item.link.target || ''}
+            rel={item.link.target ? 'noopener' : ''}
           >
             <img src={item.icon.url} alt={item.icon.alt} />
           </a>
         )
       })
 
-      const navItems = this.state.layout.data.footer_nav_items.map((item, index) =>
-        <a key={index} className="footer-nav-link" href={Link.url(item.link)}>
+      const navItems = layout.data.footer_nav_items.map((item, index) =>
+        <Link key={index} className="footer-nav-link" to={PrismicLink.url(item.link)}>
           {item.text}
-        </a>
+        </Link>
       )
       return (
         <React.Fragment>
           <div className="header" id="header">
             <div className="header-inner">
-              <a className="header-name" href="/">
-                {this.state.layout.data.site_name}
-              </a>
+              <Link className="header-name" to="/">
+                {layout.data.site_name}
+              </Link>
               <nav className="header-nav">
                 {headerItems}
               </nav>
@@ -64,14 +51,14 @@ export default function (WrappedComponent) {
           </div>
 
           <main>
-            <WrappedComponent {...this.props} />
+            <MatchedPage {...matchProps} />
           </main>
 
           <footer className="footer">
             <div className="footer-inner">
               <div>
                 <p className="footer-name">
-                  {this.state.layout.data.site_name}
+                  {layout.data.site_name}
                 </p>
                 <div className="footer-social-items">
                   {socialItems}
@@ -84,6 +71,6 @@ export default function (WrappedComponent) {
         </footer>
         </React.Fragment>
       )
-    }
-  }
+    }} />
+  )
 }
