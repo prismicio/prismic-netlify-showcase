@@ -36,6 +36,7 @@ export default class extends React.Component {
   }
 
   renderBody() {
+    console.log(this.state.blogpost.data.author.data)
     return (
       <React.Fragment>
         <div className="l-wrapper">
@@ -54,14 +55,19 @@ export default class extends React.Component {
               {RichText.render(this.state.blogpost.data.rich_content, linkResolver)}
             </div>
             <div className="blog-post-author-wrapper">
-              <img className="blog-post-author-picture" src={this.state.blogpost.data.author.data.picture.url} alt={this.state.blogpost.data.author.data.picture.alt} />
+              {this.state.blogpost.data.author.data && this.state.blogpost.data.author.data.picture
+                ? <img className="blog-post-author-picture" src={this.state.blogpost.data.author.data.picture.url} alt={this.state.blogpost.data.author.data.picture.alt} />
+                : ''
+              }
               <div>
-                <p className="blog-post-author-name">
-                  {RichText.asText(this.state.blogpost.data.author.data.name)}
-                </p>
-                <p className="blog-post-author-bio">
-                  {RichText.asText(this.state.blogpost.data.author.data.bio)}
-                </p>
+                {this.state.blogpost.data.author.data && this.state.blogpost.data.author.data.name
+                  ? <p className="blog-post-author-name">{RichText.asText(this.state.blogpost.data.author.data.name)}</p>
+                  : ''
+                }
+                {this.state.blogpost.data.author.data && this.state.blogpost.data.author.data.bio
+                  ? <p className="blog-post-author-bio">{RichText.asText(this.state.blogpost.data.author.data.bio)}</p>
+                  : ''
+                }
               </div>
             </div>
           </div>
