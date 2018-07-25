@@ -28,12 +28,12 @@ export default class extends React.Component {
   renderProductList() {
     return this.state.productList.map((document, index) =>
       <div key={index} className="products-grid-item-wrapper">
-        <img className="products-grid-item-image" src={document.data.product_image.url} alt={document.data.product_image.alt}/>
-        <p className="products-grid-item-name">
-          <Link to={linkResolver(document)}>
-            {RichText.asText(document.data.product_name)}
-          </Link>
-        </p>
+        <Link to={linkResolver(document)}>
+          <img className="products-grid-item-image" src={document.data.product_image.url} alt={document.data.product_image.alt}/>
+          <p className="products-grid-item-name">
+              {RichText.asText(document.data.product_name)}
+          </p>
+        </Link>
         <p className="products-grid-item-subtitle">{RichText.asText(document.data.sub_title)}</p>
       </div>
     )
