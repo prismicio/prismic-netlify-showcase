@@ -1,0 +1,80 @@
+import React from 'react'
+import Meta from '../../components/layout/meta'
+import Layout from '../../components/layout'
+import NotFound from '../notfound'
+import { Client, Prismic, linkResolver } from '../../components/prismic'
+import { RichText } from 'prismic-reactjs'
+
+class BlogHome extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+
+  componentDidMount() {
+    const bloghomeF = Client.getSingle('blog_home');
+    const postsF = Client.query(Prismic.Predicates.at('document.type', 'blog_post'), { pageSize: 50 });
+
+    Promise.all([bloghomeF, postsF])
+    .then(([bloghome, posts]) =>
+      this.setState({ bloghome, posts: posts.results })
+    )
+    .catch(error => {
+      console.error(error)
+      this.setState({ error })
+    })
+  }
+
+  renderPosts() {
+    return this.state.posts.map((document, index) =>
+      <div key={index} className="blog-home-post-wrapper">
+        <article>
+          <img className="blog-home-post-image" src={document.data.image.url} alt={document.data.image.alt} />
+          <p className="blog-home-post-title">
+            {RichText.asText(document.data.title)}
+          </p>
+          <p className="blog-home-post-excerpt">
+            {RichText.asText(document.data.rich_content).substring(0, 158)} …
+          </p>
+          <div className="blog-home-post-button-wrapper">
+            <a className="a-button" href={linkResolver(document)}>
+              Read post
+            </a>
+          </div>
+        </article>
+      </div>
+    )
+  }
+
+  renderBody() {
+    return (
+      <React.Fragment>
+        <div className="l-wrapper">
+          <hr className="separator-hr" />
+        </div>
+
+        <section className="blog-home-section">
+          <div className="blog-home-posts-wrapper">
+            {this.renderPosts()}
+          </div>
+        </section>
+
+        <div data-wio-id={this.state.bloghome.id}></div>
+      </React.Fragment>
+    )
+  }
+
+  render() {
+    if(!this.state.bloghome) return ''
+    else if(this.state.error) return <NotFound />
+
+    return (
+    <React.Fragment>
+      {Meta(this.state.bloghome)}
+      {this.renderBody()}
+    </React.Fragment>
+    )
+  }
+}
+
+export default Layout(BlogHome)
