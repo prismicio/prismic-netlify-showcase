@@ -22,3 +22,5 @@ yarn-error.log*
 
 # generated CSS (recreated during the build)
 src/**/*.css
+
+package-lock.json
