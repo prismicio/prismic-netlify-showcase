@@ -27,7 +27,7 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
-    Client.getByUID('blog_post', this.props.match.params.uid, { fetchLinks })
+    Client.getByUID('blog_post', this.props.computedMatch.params.uid, { fetchLinks })
     .then(blogpost => this.setState({ blogpost }))
     .catch(error => {
       console.error(error)

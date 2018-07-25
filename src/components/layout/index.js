@@ -6,9 +6,8 @@ import { Link } from 'react-router-dom'
 
 
 export default function ({component: MatchedPage, layout, ...rest}) {
-
   return (
-  <Route {...rest} layout={layout} render={ () => <LayoutComponent MatchedPage={MatchedPage} layout={layout} /> } />
+  <Route {...rest} layout={layout} render={ () => <LayoutComponent {...rest} MatchedPage={MatchedPage} layout={layout} /> } />
   )
 }
 
@@ -76,7 +75,7 @@ class LayoutComponent extends React.Component {
         </div>
 
         <main>
-          <MatchedPage {...this.state.props} />
+          <MatchedPage {...this.props} />
         </main>
 
         <footer className="footer">

@@ -30,7 +30,7 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
-    Client.getByUID('product', this.props.match.params.uid, { fetchLinks })
+    Client.getByUID('product', this.props.computedMatch.params.uid, { fetchLinks })
     .then(product => {
       if(product) this.setState({ product })
       else this.setState({ error: true })
