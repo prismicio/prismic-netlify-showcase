@@ -25,6 +25,10 @@ export default class extends React.Component {
     })
   }
 
+  componentDidUpdate() {
+    if(this.state.productsDocument) window.prerenderReady = true
+  }
+
   renderProductList() {
     return this.state.productList.map((document, index) =>
       <div key={index} className="products-grid-item-wrapper">
@@ -65,8 +69,8 @@ export default class extends React.Component {
   }
 
   render() {
-    if(!this.state.productsDocument) return ''
-    else if(this.state.error) return <NotFound />
+    if(this.state.error) return <NotFound />
+    else if(!this.state.productsDocument) return ''
 
     return (
     <React.Fragment>

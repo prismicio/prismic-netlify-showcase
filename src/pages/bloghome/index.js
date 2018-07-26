@@ -25,6 +25,10 @@ export default class extends React.Component {
     })
   }
 
+  componentDidUpdate() {
+    if(this.state.bloghome) window.prerenderReady = true
+  }
+
   renderPosts() {
     return this.state.posts.map((document, index) =>
       <div key={index} className="blog-home-post-wrapper">
@@ -65,8 +69,8 @@ export default class extends React.Component {
   }
 
   render() {
-    if(!this.state.bloghome) return ''
-    else if(this.state.error) return <NotFound />
+    if(this.state.error) return <NotFound />
+    else if(!this.state.bloghome) return ''
 
     return (
     <React.Fragment>

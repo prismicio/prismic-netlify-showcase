@@ -41,6 +41,10 @@ export default class extends React.Component {
     })
   }
 
+  componentDidUpdate() {
+    if(this.state.product) window.prerenderReady = true
+  }
+
   renderRelatedProducts(related) {
     return related.map((item, index) =>
       <div key={index} className="products-grid-item-wrapper">

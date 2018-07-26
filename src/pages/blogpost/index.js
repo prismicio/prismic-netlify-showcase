@@ -35,6 +35,10 @@ export default class extends React.Component {
     })
   }
 
+  componentDidUpdate() {
+    if(this.state.blogpost) window.prerenderReady = true
+  }
+
   renderBody() {
     console.log(this.state.blogpost.data.author.data)
     return (
@@ -79,8 +83,8 @@ export default class extends React.Component {
   }
 
   render() {
-    if(!this.state.blogpost) return ''
-    else if(this.state.error) return <NotFound msg="this article doesn't exists." />
+    if(this.state.error) return <NotFound msg="this article doesn't exists." />
+    else if(!this.state.blogpost) return ''
 
     return (
     <React.Fragment>

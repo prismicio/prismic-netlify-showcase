@@ -46,6 +46,10 @@ export default class extends React.Component {
     })
   }
 
+  componentDidUpdate() {
+    if(this.state.home) window.prerenderReady = true
+  }
+
   renderSlices(slices) {
     return slices.map((slice, index) => {
       const res = (() => {
@@ -117,8 +121,8 @@ export default class extends React.Component {
   }
 
   render() {
-    if(!this.state.home) return ''
-    else if(this.state.error) return <NotFound />
+    if(this.state.error) return <NotFound />
+    else if(!this.state.home) return ''
 
     return (
     <React.Fragment>
