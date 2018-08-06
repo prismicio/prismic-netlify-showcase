@@ -5,15 +5,11 @@ import NotFound from '../notfound'
 import { Client, linkResolver } from '../../components/prismic'
 import { RichText, Link as PrismicLink } from 'prismic-reactjs'
 
-const fetchLinks = [
-  'product.product_image',
-  'product.product_name',
-  'product.sub_title'
-]
-
 const graphQuery = `{
   product {
+    ...productFields
     related_products {
+      ...related_productsFields
       product1 {
         product_image
         product_name
@@ -27,10 +23,13 @@ export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
+
+    this.handleClickAddCart = this.handleClickAddCart.bind(this)
   }
 
   componentDidMount() {
-    Client.getByUID('product', this.props.computedMatch.params.uid, { fetchLinks })
+    const { computedMatch: { params } } = this.props;
+    Client.getByUID('product', params.uid, { graphQuery })
     .then(product => {
       if(product) this.setState({ product })
       else this.setState({ error: true })
@@ -43,6 +42,11 @@ export default class extends React.Component {
 
   componentDidUpdate() {
     if(this.state.product) window.prerenderReady = true
+  }
+
+  handleClickAddCart(event) {
+    event.preventDefault()
+    window.alert(`No. Not today.\nWe're integrating the GraphQL API at the moment, so coffee delivery is temporarily unavailable.`)
   }
 
   renderRelatedProducts(related) {
@@ -80,7 +84,7 @@ export default class extends React.Component {
                     {RichText.render(this.state.product.data.rich_content, linkResolver)}
                   </div>
                   <div className="product-hero-button-wrapper">
-                    <Link className="a-button a-button--filled" to={PrismicLink.url(this.state.product.data.button_link, linkResolver)}>
+                    <Link className="a-button a-button--filled" to={PrismicLink.url(this.state.product.data.button_link, linkResolver)} onClick={this.handleClickAddCart}>
                       {RichText.asText(this.state.product.data.button_label)}
                     </Link>
                   </div>

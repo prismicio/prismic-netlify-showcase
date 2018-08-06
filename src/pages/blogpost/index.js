@@ -4,14 +4,9 @@ import NotFound from '../notfound'
 import { Client, linkResolver } from '../../components/prismic'
 import { RichText } from 'prismic-reactjs'
 
-const fetchLinks = [
-  'author.name',
-  'author.bio',
-  'author.picture'
-]
-
 const graphQuery = `{
   blog_post {
+    ...blog_postFields
     author {
       name
       bio
@@ -27,7 +22,8 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
-    Client.getByUID('blog_post', this.props.computedMatch.params.uid, { fetchLinks })
+    const { computedMatch: { params } } = this.props;
+    Client.getByUID('blog_post', params.uid, { graphQuery })
     .then(blogpost => this.setState({ blogpost }))
     .catch(error => {
       console.error(error)

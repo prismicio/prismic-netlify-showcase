@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { Link as PrismicLink, RichText } from 'prismic-reactjs'
 import { linkResolver } from '../prismic'
 

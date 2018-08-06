@@ -8,15 +8,49 @@ import { CTABanner, FeaturedItems, NumerotedItems, Separator, TextBlock } from '
 const graphQuery = `
 {
   homepage {
+    ...homepageFields
     body {
+      ... on text_block {
+        non-repeat {
+          ...non-repeatFields
+        }
+        repeat {
+          ...repeatFields
+        }
+      }
+      ... on separator {
+        non-repeat {
+          ...non-repeatFields
+        }
+        repeat {
+          ...repeatFields
+        }
+      }
+      ... on cta_banner {
+        non-repeat {
+          ...non-repeatFields
+        }
+        repeat {
+          ...repeatFields
+        }
+      }
+      ... on big_bullet_item {
+        non-repeat {
+          ...non-repeatFields
+        }
+        repeat {
+          ...repeatFields
+        }
+      }
       ... on featured_items {
+        non-repeat {
+          ...non-repeatFields
+        }
         repeat {
           link_to_product {
-            ... on Product {
-              product_image
-              product_name
-              sub_title
-            }
+            product_image
+            product_name
+            sub_title
           }
         }
       }
@@ -25,12 +59,6 @@ const graphQuery = `
 }
 `
 
-const fetchLinks = [
-  'product.product_image',
-  'product.product_name',
-  'product.sub_title'
-]
-
 export default class extends React.Component {
   constructor(props) {
     super(props)
@@ -38,7 +66,7 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
-    Client.getSingle('homepage', {fetchLinks})
+    Client.getSingle('homepage', { graphQuery })
     .then(home => this.setState({ home }))
     .catch(error => {
       console.error(error)
