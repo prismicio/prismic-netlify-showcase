@@ -10,6 +10,7 @@ const Product = asyncImport(import("./pages/product"))
 const BlogHome = asyncImport(import("./pages/bloghome"))
 const BlogPost = asyncImport(import("./pages/blogpost"))
 const NotFound = asyncImport(import("./pages/notfound"))
+const Preview = asyncImport(import("./components/prismic/preview"))
 
 /* Use components to define routes */
 export default ({layout}) =>
@@ -20,6 +21,7 @@ export default ({layout}) =>
       <Layout layout={layout} path="/products/:uid" exact component={Product} />
       <Layout layout={layout} path="/blog" exact component={BlogHome} />
       <Layout layout={layout} path="/blog/:uid" exact component={BlogPost} />
+      <Route exact path="/preview" render={routeProps => <Preview {...routeProps} />} />
       <Route component={NotFound} />
     </Switch>
   </Router>
